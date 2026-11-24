@@ -23,7 +23,7 @@
 
 ---
 
-[🌐 Live Showcase Portal](#-live-showcase-portal) • [🎮 Featured Experiments](#-featured-experiments) • [🛠️ Tech Stack](#️-tech-stack) • [🚀 Quick Start](#-quick-start) • [☁️ Deployment](#️-deployment)
+[🌐 Live Showcase Portal](#-live-showcase-portal) • [🎮 Featured Experiments](#-featured-experiments) • [🛠️ Tech Stack](#️-tech-stack) • [🚀 Quick Start](#-quick-start)
 
 ---
 
@@ -159,21 +159,6 @@ Visit `http://localhost:8000` (or the provided port) in your browser to experien
 
 ---
 
-## ☁️ Deployment
-
-### One-Click Deploy with Vercel
-
-1. Fork or clone this repository to your GitHub account.
-2. Go to **[vercel.com/new](https://vercel.com/new)**.
-3. Select and import **`Web_experiments`**.
-4. Keep the default settings:
-   - **Framework Preset**: `Other`
-   - **Root Directory**: `./`
-5. Click **Deploy** 🚀
-
-Your unified gallery will be live instantly with zero configuration!
-
----
 
 ## 🤝 Contributing
 
