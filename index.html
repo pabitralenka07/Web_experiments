@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creative Web Animations & Interactive UI Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(17, 24, 39, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-hover-border: rgba(99, 102, 241, 0.45);
+      --text-main: #f3f4f6;
+      --text-muted: #94a3b8;
+      --accent-primary: #6366f1;
+      --accent-secondary: #ec4899;
+      --gradient: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.12) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(168, 85, 247, 0.1) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      flex: 1;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #a5b4fc;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: clamp(1rem, 1.8vw, 1.18rem);
+      max-width: 620px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+
+    /* Search & Filter Controls */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 12px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 240px;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      padding: 10px 16px 10px 38px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    .search-box svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      width: 18px;
+      height: 18px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .filter-btn.active {
+      background: var(--gradient);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+    }
+
+    /* Grid layout */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: var(--card-hover-border);
+      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.6), 0 0 24px -4px rgba(99, 102, 241, 0.2);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .tag {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .card-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.92rem;
+      padding: 11px 18px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .card-btn:hover {
+      background: var(--gradient);
+      border-color: transparent;
+      box-shadow: 0 4px 18px rgba(99, 102, 241, 0.4);
+    }
+
+    .card-btn svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.2s ease;
+    }
+
+    .card-btn:hover svg {
+      transform: translateX(3px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    footer a {
+      color: #a5b4fc;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge">
+        <span style="display:inline-block; width:8px; height:8px; background:#10b981; border-radius:50%;"></span>
+        10 Interactive Demos
+      </div>
+      <h1>Creative Web Animations</h1>
+      <p class="subtitle">A curated collection of 3D showcases, micro-interactions, canvas particle physics, and creative CSS/JS experiments.</p>
+    </header>
+
+    <div class="controls">
+      <div class="search-box">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Search experiments, tags, or keywords...">
+      </div>
+      <div class="filters">
+        <button class="filter-btn active" data-category="all">All (10)</button>
+        <button class="filter-btn" data-category="3d">3D & WebGL</button>
+        <button class="filter-btn" data-category="interactive">Micro-Interactions</button>
+        <button class="filter-btn" data-category="canvas">Canvas & Particles</button>
+        <button class="filter-btn" data-category="css">CSS Art</button>
+      </div>
+    </div>
+
+    <div class="grid" id="projectGrid">
+
+      <!-- 1. 3D Card Animation -->
+      <div class="card" data-category="3d interactive" data-title="3d product cards keyboard model viewer">
+        <div class="card-icon">⌨️</div>
+        <h2 class="card-title">3D Product Cards</h2>
+        <p class="card-desc">Interactive 3D mechanical keyboards with camera orbit physics, frosted glass blur, and color palette customization.</p>
+        <div class="tags">
+          <span class="tag">model-viewer</span>
+          <span class="tag">WebGL</span>
+          <span class="tag">CSS Glass</span>
+        </div>
+        <a class="card-btn" href="./3D%20Card%20Animation/">
+          <span>Launch Experiment</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
+
+      <!-- 2. Interactive Galaxy -->
+      <div class="card" data-category="canvas 3d interactive" data-title="interactive galaxy particles space cosmos canvas">
+        <div class="card-icon">🌌</div>
+        <h2 class="card-title">Interactive Galaxy</h2>
+        <p class="card-desc">Cosmic particle system simulating deep-space planetary orbits with responsive cursor gravity and fluid motion.</p>
+        <div class="tags">
+          <span class="tag">HTML5 Canvas</span>
+          <span class="tag">Particle Physics</span>
+          <span class="tag">JavaScript</span>
+        </div>
+        <a class="card-btn" href="./Interactive%20Galaxy/">
+          <span>Launch Experiment</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
+
+      <!-- 3. Interactive Logout Button -->
+      <div class="card" data-category="interactive css" data-title="interactive logout button character door micro interaction">
+        <div class="card-icon">🚪</div>
+        <h2 class="card-title">Interactive Logout Button</h2>
+        <p class="card-desc">Playful micro-interaction button featuring an animated character walking out through an opening door upon click.</p>
+        <div class="tags">
+          <span class="tag">Micro-interaction</span>
+          <span class="tag">CSS Keyframes</span>
+          <span class="tag">SVG Animation</span>
+        </div>
+        <a class="card-btn" href="./Interactive%20Logout%20Button/">
+          <span>Launch Experiment</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
+
+      <!-- 4. Spider Clock -->
+      <div class="card" data-category="canvas interactive" data-title="spider clock analog kinetic web time">
+        <div class="card-icon">🕷️</div>
+        <h2 class="card-title">Spider Clock</h2>
+        <p class="card-desc">Kinetic analog timepiece with organic spider-web inspired mechanical links keeping real-time clock synchronization.</p>
+        <div class="tags">
+          <span class="tag">Kinetic Typography</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">CSS3</span>
+        </div>
+        <a class="card-btn" href="./Spider-Clock--main/">
+          <span>Launch Experiment</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
+
+      <!-- 5. 3D Flip Card CSS -->
+      <div class="card" data-category="3d css" data-title="3d flip card css perspective transform">
+        <div class="card-icon">🃏</div>
+        <h2 class="card-title">3D Flip Card</h2>
+        <p class="card-desc">Dual-sided card with smooth 180° rotational perspective flip triggered on hover with realistic CSS 3D depth.</p>
+        <div class="tags">
+          <span class="tag">Pure CSS3</span>
+          <span class="tag">3D Transforms</span>
+          <span class="tag">Perspective</span>
+        </div>
+        <a class="card-btn" href="./3D%20Flip%20Card%20CSS/">
+          <span>Launch Experiment</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
+
+      <!-- 6. Animated Card Opening -->
+      <div class="card" data-category="interactive css" data-title="animated card opening envelope gift greeting">
+        <div class="card-icon">💌</div>
+        <h2 class="card-title">Animated Card Opening</h2>
+        <p class="card-desc">Multi-step unfolding sequence simulating a high-end greeting card revealing its inner letter and illustrations.</p>
+        <div class="tags">
+          <span class="tag">CSS3 Animations</span>
+          <span class="tag">Paper Unfolding</span>
+          <span class="tag">UI Transitions</span>
+        </div>
+        <a class="card-btn" href="./Animated%20Card%20Opening/">
+          <span>Launch Experiment</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
+
+      <!-- 7. Candle Animation -->
+      <div class="card" data-category="css" data-title="candle animation flame glowing light fire">
+        <div class="card-icon">🕯️</div>
+        <h2 class="card-title">Candle Animation</h2>
+        <p class="card-desc">Atmospheric flickering candle flame with glowing light halos and wax melting physics created using pure CSS keyframes.</p>
+        <div class="tags">
+          <span class="tag">Pure CSS3</span>
+          <span class="tag">CSS Art</span>
+          <span class="tag">Flame Physics</span>
+        </div>
+        <a class="card-btn" href="./Candle%20Animation/">
+          <span>Launch Experiment</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
+
+      <!-- 8. Heart Animation -->
+      <div class="card" data-category="css interactive" data-title="heart animation pulse geometric love">
+        <div class="card-icon">💖</div>
+        <h2 class="card-title">Heart Animation</h2>
+        <p class="card-desc">Pulsing geometric heart bloom animation with synchronized multi-layered harmonic scaling pulses.</p>
+        <div class="tags">
+          <span class="tag">CSS Keyframes</span>
+          <span class="tag">Heart Shape</span>
+          <span class="tag">JavaScript</span>
+        </div>
+        <a class="card-btn" href="./Heart%20Animation/">
+          <span>Launch Experiment</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
+
+      <!-- 9. Heart Birthday -->
+      <div class="card" data-category="interactive canvas" data-title="heart birthday celebration music fireworks romantic">
+        <div class="card-icon">🎂</div>
+        <h2 class="card-title">Heart Birthday</h2>
+        <p class="card-desc">Interactive celebration page with floating particle hearts, romantic glowing typography, and celebration effects.</p>
+        <div class="tags">
+          <span class="tag">Celebration</span>
+          <span class="tag">Audio / Visuals</span>
+          <span class="tag">JavaScript</span>
+        </div>
+        <a class="card-btn" href="./HeartBirthday-main/">
+          <span>Launch Experiment</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
+
+      <!-- 10. Valentine Confession -->
+      <div class="card" data-category="interactive css" data-title="valentine confession letter envelope love romantic">
+        <div class="card-icon">🌹</div>
+        <h2 class="card-title">Valentine Confession</h2>
+        <p class="card-desc">Interactive confession letter featuring an envelope opening sequence and interactive choices.</p>
+        <div class="tags">
+          <span class="tag">jQuery</span>
+          <span class="tag">Envelope Flow</span>
+          <span class="tag">Interactive</span>
+        </div>
+        <a class="card-btn" href="./valentine-confession/index.html">
+          <span>Launch Experiment</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
+
+      <div class="no-results" id="noResults">
+        No matching animation experiments found.
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Crafted with creative HTML, CSS & JavaScript • Ready for deployment on <a href="https://vercel.com" target="_blank" rel="noopener">Vercel</a></p>
+  </footer>
+
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.card');
+    const noResults = document.getElementById('noResults');
+
+    let activeCategory = 'all';
+    let searchQuery = '';
+
+    function filterCards() {
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const categories = card.getAttribute('data-category').split(' ');
+        const titleAndDesc = card.getAttribute('data-title').toLowerCase();
+
+        const matchesCategory = activeCategory === 'all' || categories.includes(activeCategory);
+        const matchesSearch = !searchQuery || titleAndDesc.includes(searchQuery.toLowerCase());
+
+        if (matchesCategory && matchesSearch) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCategory = btn.getAttribute('data-category');
+        filterCards();
+      });
+    });
+
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value.trim();
+      filterCards();
+    });
+  </script>
+</body>
+</html>
